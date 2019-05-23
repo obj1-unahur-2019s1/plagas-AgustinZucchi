@@ -1,0 +1,42 @@
+import Elementos.*
+import Plagas.*
+
+describe "Elementos" {
+
+	var casa = new Hogar(mugre = 20, confort = 40)
+	var casitaFea = new Hogar(mugre = 30, confort = 20)
+	var huertita = new Huerta(capacidadProduccion = 100)
+	var perrito = new Mascota(nivelSalud = 270)
+
+	test "Hogar" {
+		assert.that(casa.esBueno())
+		assert.notThat(casitaFea.esBueno())
+	}
+
+	test "Huerta" {
+		const huertoide = new Huerta(capacidadProduccion = 30)
+		reguladorHuerta.nivelMinimo(20)
+		assert.that(huertita.esBueno())
+		assert.that(huertoide.esBueno())
+		reguladorHuerta.nivelMinimo(50)
+		assert.that(huertita.esBueno())
+		assert.notThat(huertoide.esBueno())
+	}
+
+	test "Mascota" {
+		assert.that(perrito.esBueno())
+		perrito.nivelSalud(240)
+		assert.notThat(perrito.esBueno())
+	}
+
+	test "Barrio" {
+		const moronSur = new Barrio(elementos = [ casa, huertita, perrito ])
+		assert.that(moronSur.esCopado())
+		moronSur.elementos([ casa, perrito, casitaFea ])
+		perrito.nivelSalud(230)
+		assert.notThat(moronSur.esCopado())
+	}
+
+}
+
+}
